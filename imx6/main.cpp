@@ -39,7 +39,7 @@ QT_BEGIN_NAMESPACE
 class QEglFSIntegrationPlugin : public QPlatformIntegrationPlugin
 {
     Q_OBJECT
-    Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QPA.QPlatformIntegrationFactoryInterface.5.2" FILE "eglfs.json")
+    Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QPA.QPlatformIntegrationFactoryInterface.5.2" FILE "imx6.json")
 public:
     QPlatformIntegration *create(const QString&, const QStringList&);
 };
@@ -47,7 +47,7 @@ public:
 QPlatformIntegration* QEglFSIntegrationPlugin::create(const QString& system, const QStringList& paramList)
 {
     Q_UNUSED(paramList);
-    if (!system.compare(QLatin1String("eglfs"), Qt::CaseInsensitive))
+    if (!system.compare(QLatin1String("imx6"), Qt::CaseInsensitive))
         return new QEglFSIntegration;
 
     return 0;
