@@ -26,3 +26,13 @@ qmake-qt5 QMAKE_LIBS_PRIVATE+="-lfontconfig -lfreetype -lXrender -lglib-2.0 -lud
 ```
 
 Make sure you have the ```gpu-viv-bin-mx6q-fb``` package installed.
+
+## How to use it
+
+Run this command for tests:
+
+```sh
+QT_QPA_EGLFS_DEBUG=1 qmlscene -platform imx6 <filename>.qml
+```
+
+Replace <filename> with the actual name of a QML file.
