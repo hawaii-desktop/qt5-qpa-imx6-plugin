@@ -37,3 +37,19 @@ RESOURCES += $$PWD/cursor.qrc
 
 OTHER_FILES += \
     $$PWD/imx6.json
+
+# Vivante
+
+QMAKE_INCDIR           += $$[QT_SYSROOT]/usr/include
+QMAKE_LIBDIR           += $$[QT_SYSROOT]/usr/lib $$[QT_SYSROOT]/opt/fsl/lib
+
+QMAKE_LIBS_EGL         += -lEGL
+QMAKE_LIBS_OPENGL_ES2  += -lGLESv2 -lEGL -lGAL
+QMAKE_LIBS_OPENVG      += -lOpenVG -lEGL -lGAL
+
+QMAKE_LFLAGS           += -Wl,-rpath-link,$$[QT_SYSROOT]/usr/lib
+
+IMX6_CFLAGS             = -march=armv7-a -mfpu=neon -DLINUX=1 -DEGL_API_FB=1
+QMAKE_CFLAGS           += $$IMX6_CFLAGS
+QMAKE_CXXFLAGS         += $$IMX6_CFLAGS
+INCLUDEPATH            += /opt/fsl/include
