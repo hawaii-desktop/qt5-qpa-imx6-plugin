@@ -74,6 +74,15 @@ void QEglFSWindow::create()
 
     m_flags = Created;
 
+    static EGLSurface __singleWindowSurface;
+    if (QEglFSHooks::hooks() && ! QEglFSHooks::hooks()->hasCapability(QPlatformIntegration::MultipleWindows) && (__singleWindowSurface)) {
+        m_surface = __singleWindowSurface;
+#ifdef QEGL_EXTRA_DEBUG
+        qWarning("Surface recreate request, re-using %x\n", m_surface);
+#endif
+        return;
+    }
+
     if (window()->type() == Qt::Desktop)
         return;
 
@@ -85,7 +94,7 @@ void QEglFSWindow::create()
         if (isRaster() && screen->compositingWindow())
             return;
 
-#if !defined(Q_OS_ANDROID) || defined(Q_OS_ANDROID_NO_SDK)
+#if !defined(Q_OS_ANDROID) || defined(Q_OS_ANDROID_NO_SDK) || defined(EGL_API_FB)
         // We can have either a single OpenGL window or multiple raster windows.
         // Other combinations cannot work.
         qFatal("EGLFS: OpenGL windows cannot be mixed with others.");
@@ -104,6 +113,9 @@ void QEglFSWindow::create()
     m_format = q_glFormatFromConfig(display, m_config, platformFormat);
 
     resetSurface();
+
+    if (QEglFSHooks::hooks() && !QEglFSHooks::hooks()->hasCapability(QPlatformIntegration::MultipleWindows))
+        __singleWindowSurface = m_surface;
 
     screen->setPrimarySurface(m_surface);
 
